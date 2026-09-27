@@ -1220,6 +1220,11 @@
   .budget-subtitle{ font-family:var(--font-display); font-weight:600; font-size:21px; margin-bottom:6px; }
   .budget-lead-sm{ color:var(--ink-soft); font-size:14px; margin-bottom:22px; }
 
+  .client-badge{ display:flex; align-items:center; gap:14px; margin-bottom:22px; }
+  .client-badge img{ width:52px; height:52px; border-radius:50%; object-fit:cover; flex-shrink:0; }
+  .cb-name{ font-family:var(--font-display); font-weight:600; font-size:15px; }
+  .cb-role{ color:var(--ink-soft); font-size:12.5px; margin-top:2px; }
+
   .plans{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:36px; }
   @media (max-width:760px){ .plans{ grid-template-columns:1fr; } }
 
@@ -1355,7 +1360,7 @@
           <video id="testimonialHeroVideo" muted loop autoplay playsinline></video>
           <div class="hero-fallback" id="testimonialHeroFallback">
             <strong>Tu video acá</strong>
-            <span>Poné tu clip en CONFIG.heroVideo.</span>
+            <span>Pon tu clip en CONFIG.heroVideo.</span>
           </div>
         </div>
       </div>
@@ -1474,14 +1479,21 @@
   <section id="presupuesto" class="budget-section">
     <div class="container budget-wrap">
 
+      <div class="client-badge">
+        <img src="rda-logo.png" alt="RDA Digital">
+        <div>
+          <div class="cb-name">Propuesta para RDA Digital</div>
+          <div class="cb-role">Asesoría · Impresión · RCV · Certificados · @somosrda</div>
+        </div>
+      </div>
       <span class="section-kicker">Propuesta</span>
       <h2 class="budget-title">Video para redes sociales,<br>hecho para retener.</h2>
-      <p class="budget-lead">Planes mensuales de edición de reels y shorts. Elegí el nivel de involucramiento que necesitás.</p>
+      <p class="budget-lead">Contenido pensado para mostrar todos los servicios de RDA — asesoría, impresión, RCV y certificados — de forma clara y constante en redes. Elige el nivel de involucramiento que necesitas.</p>
 
       <div class="plans">
         <div class="plan">
           <div class="plan-name">Opción 1 · Edición</div>
-          <div class="plan-desc">Vos grabás (o me enviás el material), yo edito.</div>
+          <div class="plan-desc">Tú grabas (o me envías el material), yo edito.</div>
           <div class="plan-price">$100 <em>/ mes</em></div>
           <ul class="feat-list">
             <li class="feat">8 videos editados por mes</li>
@@ -1520,7 +1532,7 @@
       </div>
 
       <div class="budget-note">
-        <strong>Tasa y forma de pago:</strong> todos los precios se manejan a tasa BCV del día del pago. Se abona 50% de adelanto para iniciar y 50% contra la entrega final del proyecto — o, si lo preferís, armamos juntos un plan de pago.
+        <strong>Tasa y forma de pago:</strong> todos los precios se manejan a tasa BCV del día del pago. Se abona 50% de adelanto para iniciar y 50% contra la entrega final del proyecto — o, si lo prefieres, armamos juntos un plan de pago.
         <br><br>
         <strong>Video suelto</strong> (fuera de cualquier plan): desde $15, según la complejidad.
         <br><br>
@@ -1553,8 +1565,8 @@
   <div class="container">
     <div class="footer-row">
       <div class="footer-cta">
-        <h2>¿Tenés un proyecto en mente?</h2>
-        <p>Contame de qué se trata y armamos algo juntos.</p>
+        <h2>¿Tienes un proyecto en mente?</h2>
+        <p>Cuéntame de qué se trata y armamos algo juntos.</p>
       </div>
       <div class="footer-links">
         <a href="mailto:tu@email.com">Email</a>
@@ -1580,13 +1592,13 @@
 
 <script>
 /* ============================================================
-   CONFIG — EDITÁ ACÁ TODO TU CONTENIDO REAL
+   CONFIG — EDITA ACÁ TODO TU CONTENIDO REAL
    ============================================================ */
 const CONFIG = {
   name: "Jose Esperandio",
   email: "joseggutierrez13@email.com",
 
-  // Video principal del hero: tu clip en loop (vos escribiendo/editando, objetos, etc.)
+  // Video principal del hero: tu clip en loop (tú escribiendo/editando, objetos, etc.)
   heroVideo: "video.mp4",
 
   // Clientes con los que trabajaste
@@ -1620,7 +1632,7 @@ const CONFIG = {
     "@joseesperandioo"
   ],
 
-  // Programas que usás — color = color del badge
+  // Programas que usas — color = color del badge
   tools: [
     { label: "Pr", sub: "Premiere Pro",  color: "#00005B" },
     { label: "Ae", sub: "After Effects", color: "#00005B" },
@@ -1632,7 +1644,7 @@ const CONFIG = {
     { label: "Au", sub: "Audition",      color: "#00005B" }
   ],
 
-  // Grid de videos de trabajos — poné tu src real en cada uno
+  // Grid de videos de trabajos — pon tu src real en cada uno
   works: [
     { title: "Local Vista", client: "Sake Sushi", src: "sake-sushi.mp4" },
     { title: "Video 19", client: "Mundo Amazon", src: "mundo-amazon.mp4" },
@@ -1857,8 +1869,5 @@ if (navMenuBtn && navEl) {
   })();
 </script>
 
-</body>
-</html>
-</script>
 </body>
 </html>
