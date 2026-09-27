@@ -52,27 +52,70 @@
      NAV
      ============================================================ */
   header.nav{
-    position:sticky; top:0; z-index:50;
-    background:rgba(246,245,241,0.78);
-    backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--line);
+    position:fixed; top:16px; left:50%; z-index:50;
+    width:min(calc(100% - 32px), 1080px);
+    transform:translateX(-50%);
+    background:rgba(16,16,18,.94);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:999px;
+    box-shadow:0 18px 45px -24px rgba(0,0,0,.55);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    transition:transform .35s cubic-bezier(.2,.75,.2,1), width .35s ease, box-shadow .35s ease;
   }
-  .nav-row{ display:flex; align-items:center; justify-content:space-between; height:72px; }
-  .brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:600; font-size:16px; }
+  header.nav.scrolled{
+    width:min(calc(100% - 44px), 820px);
+    box-shadow:0 20px 48px -25px rgba(0,0,0,.7);
+  }
+  .nav-row{ display:flex; align-items:center; justify-content:space-between; min-height:62px; padding:7px 8px 7px 12px; }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:600; font-size:15px; color:#fff; white-space:nowrap; }
   .brand .mono{
-    width:34px; height:34px; border-radius:10px; background:var(--dark); color:var(--accent);
+    width:36px; height:36px; border-radius:50%; background:var(--accent); color:var(--dark);
     display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;
   }
-  .nav-links{ display:flex; align-items:center; gap:32px; font-size:14.5px; color:var(--ink-soft); }
-  .nav-links a:hover{ color:var(--ink); }
+  .nav-links{ display:flex; align-items:center; gap:4px; font-size:12.5px; color:rgba(255,255,255,.64); }
+  .nav-links a{ padding:9px 11px; border-radius:999px; transition:color .2s ease, background .2s ease, transform .2s ease; }
+  .nav-links a:hover{ color:#fff; background:rgba(255,255,255,.09); transform:translateY(-1px); }
   .nav-cta{
     display:flex; align-items:center; gap:8px;
-    background:var(--dark); color:var(--surface);
-    padding:10px 18px; border-radius:999px; font-size:14px; font-weight:500;
-    transition:transform .2s ease, background .2s ease;
+    background:var(--accent); color:var(--dark);
+    padding:10px 15px; border-radius:999px; font-size:12.5px; font-weight:700;
+    transition:transform .2s ease, filter .2s ease;
+    white-space:nowrap;
   }
-  .nav-cta:hover{ background:var(--dark-2); transform:translateY(-1px); }
-  @media (max-width:760px){ .nav-links{ display:none; } }
+  .nav-cta:hover{ filter:brightness(1.04); transform:translateY(-2px); }
+  .nav-menu-btn{
+    display:none; width:38px; height:38px; border:0; border-radius:50%;
+    background:rgba(255,255,255,.09); color:#fff; cursor:pointer;
+    align-items:center; justify-content:center;
+  }
+  .nav-menu-btn span,.nav-menu-btn span::before,.nav-menu-btn span::after{
+    content:""; display:block; width:15px; height:1.5px; background:currentColor;
+    transition:transform .25s ease, opacity .2s ease;
+  }
+  .nav-menu-btn span::before{ transform:translateY(-5px); }
+  .nav-menu-btn span::after{ transform:translateY(3.5px); }
+  .nav-menu-btn.open span{ background:transparent; }
+  .nav-menu-btn.open span::before{ transform:rotate(45deg); }
+  .nav-menu-btn.open span::after{ transform:rotate(-45deg); }
+  .mobile-nav{ display:none; }
+  @media (max-width:820px){
+    header.nav{ top:10px; width:calc(100% - 20px); }
+    .nav-row{ min-height:58px; }
+    .nav-links{ display:none; }
+    .nav-cta{ padding:9px 13px; }
+    .nav-menu-btn{ display:flex; }
+    .mobile-nav{
+      position:absolute; top:68px; left:0; right:0; padding:8px;
+      background:rgba(16,16,18,.97); border:1px solid rgba(255,255,255,.1);
+      border-radius:22px; opacity:0; pointer-events:none; transform:translateY(-8px) scale(.98);
+      transition:opacity .25s ease, transform .25s ease;
+    }
+    header.nav.menu-open .mobile-nav{ opacity:1; pointer-events:auto; transform:none; }
+    .mobile-nav a{ display:block; color:rgba(255,255,255,.72); padding:13px 14px; border-radius:14px; font-size:13px; }
+    .mobile-nav a:hover{ color:#fff; background:rgba(255,255,255,.08); }
+  }
 
   /* ============================================================
      HERO
@@ -99,14 +142,14 @@
   /* ---- floating hero stage ---- */
   .hero-stage{
     position:relative;
-    max-width:1080px; margin:0 auto;
-    padding:70px clamp(10px,6vw,90px);
+    max-width:1200px; margin:0 auto;
+    padding:52px clamp(0px,3vw,40px);
   }
   .hero-card{
     position:relative;
     background:transparent;
     border-radius:0;
-    aspect-ratio:16/8.6;
+    aspect-ratio:16/8.2;
     overflow:visible;
     box-shadow:none;
   }
@@ -163,7 +206,7 @@
     .prop-mic,.prop-cam{ display:flex; }
   }
   @media (max-width:640px){
-    .hero-stage{ padding:44px 14px; }
+    .hero-stage{ padding:36px 8px; }
     .float-prop{ transform:scale(0.82); }
     .prop-typing{ left:-2%; } .prop-play{ right:-2%; }
   }
@@ -304,19 +347,936 @@
   .client-card .logo img{
     width:100%; height:100%; object-fit:cover;
   }
+
+  /* ============================================================
+     PORTFOLIO PRO / VISUAL LAYER
+     ============================================================ */
+  .section-kicker{
+    display:block;
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-bottom:10px;
+    font-weight:600;
+  }
+
+  .hero-actions{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:-14px auto 24px;
+  }
+  .hero-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:18px;
+    padding:13px 18px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    font-size:13px;
+    font-weight:600;
+    transition:transform .22s ease, background .22s ease, color .22s ease, border-color .22s ease;
+  }
+  .hero-btn span{ font-size:16px; line-height:1; }
+  .hero-btn-dark{ background:var(--dark); color:#fff; border-color:var(--dark); }
+  .hero-btn-light{ background:var(--surface); }
+  .hero-btn:hover{ transform:translateY(-3px); }
+  .hero-btn-light:hover{ background:#fff; border-color:var(--dark); }
+  .hero-tags{
+    display:flex;
+    justify-content:center;
+    gap:28px;
+    flex-wrap:wrap;
+    color:var(--ink-faint);
+    font-size:10px;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    margin-bottom:28px;
+  }
+  .hero-tags span:first-child{ color:var(--ink-soft); }
+
+  .work-section{
+    background:var(--dark);
+    color:#fff;
+    padding-top:86px;
+    padding-bottom:92px;
+  }
+  .work-section .section-head p{ color:rgba(255,255,255,.58); }
+  .work-section .section-kicker{ color:rgba(255,255,255,.42); }
+  .work-section .section-head h2{ font-size:clamp(30px,4.5vw,56px); letter-spacing:-.035em; }
+
+  .work-grid{
+    display:grid;
+    grid-template-columns:repeat(12,1fr);
+    gap:16px;
+    margin-top:42px;
+  }
+
+  /* ---- Lightbox: ver el video en grande con sonido y controles ---- */
+  .lightbox{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(10,10,11,.92);
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    opacity:0; pointer-events:none;
+    transition:opacity .25s ease;
+  }
+  .lightbox.is-open{ opacity:1; pointer-events:auto; }
+  .lightbox-box{
+    position:relative;
+    width:min(92vw, 420px);
+    max-height:90vh;
+  }
+  .lightbox-box video{
+    width:100%; max-height:90vh; border-radius:18px;
+    background:#000;
+    box-shadow:0 40px 90px -30px rgba(0,0,0,.8);
+  }
+  .lightbox-meta{ margin-top:14px; color:#fff; text-align:center; }
+  .lightbox-meta .t{ font-family:var(--font-display); font-weight:600; font-size:16px; }
+  .lightbox-meta .c{ color:rgba(255,255,255,.55); font-size:13px; margin-top:2px; }
+  .lightbox-close{
+    position:absolute; top:-46px; right:0;
+    width:36px; height:36px; border-radius:50%;
+    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2);
+    color:#fff; font-size:18px; line-height:1; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .lightbox-close:hover{ background:rgba(255,255,255,.22); }
+  .work-card{
+    position:relative;
+    width:auto;
+    max-width:none;
+    border-radius:22px;
+    overflow:hidden;
+    aspect-ratio:4/5;
+    background:#18181b;
+    cursor:pointer;
+    isolation:isolate;
+    transform:translateZ(0);
+    transition:transform .35s cubic-bezier(.2,.75,.2,1), box-shadow .35s ease;
+  }
+  .work-card:first-child{
+    grid-column:span 6;
+    grid-row:span 2;
+    aspect-ratio:4/5;
+  }
+  .work-card:nth-child(n+2){ grid-column:span 3; }
+  .work-card:hover{
+    transform:translateY(-7px) scale(1.008);
+    box-shadow:0 28px 55px -28px rgba(0,0,0,.75);
+  }
+  .work-card video, .work-card .work-fallback{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .6s cubic-bezier(.2,.75,.2,1), filter .35s ease;
+  }
+  .work-card:hover video{ transform:scale(1.035); }
+  .work-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,.03) 35%,rgba(0,0,0,.82) 100%);
+    z-index:1;
+    pointer-events:none;
+  }
+  .work-meta{
+    position:absolute;
+    z-index:2;
+    left:18px;
+    right:18px;
+    bottom:16px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:12px;
+    color:#fff;
+  }
+  .work-meta .t{ font-size:14px; font-weight:600; line-height:1.25; }
+  .work-meta .c{ font-size:11px; color:rgba(255,255,255,.58); margin-top:4px; }
+  .work-card:first-child .work-meta .t{ font-size:18px; }
+  .work-card:first-child .work-meta .c{ font-size:12px; }
+  .work-meta .play{
+    width:34px;
+    height:34px;
+    flex:0 0 auto;
+    border-radius:50%;
+    background:var(--accent);
+    color:var(--dark);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform:translateY(2px);
+    transition:transform .25s ease;
+  }
+  .work-card:hover .work-meta .play{ transform:translateY(0) rotate(-8deg); }
+
+  .process-section{ padding:96px 0; }
+  .process-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin-top:34px;
+  }
+  .process-card{
+    min-height:300px;
+    position:relative;
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:26px;
+    background:var(--surface);
+    overflow:hidden;
+    transition:transform .3s ease, border-color .3s ease;
+  }
+  .process-card:hover{ transform:translateY(-5px); border-color:#c8c5bb; }
+  .process-card-dark{
+    background:var(--dark);
+    color:#fff;
+    border-color:var(--dark);
+  }
+  .process-num{
+    font-size:10px;
+    letter-spacing:.12em;
+    color:var(--ink-faint);
+  }
+  .process-card-dark .process-num{ color:rgba(255,255,255,.45); }
+  .process-icon{
+    position:absolute;
+    top:22px;
+    right:22px;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--bg);
+    font-size:18px;
+  }
+  .process-card-dark .process-icon{ background:var(--accent); color:var(--dark); }
+  .process-card h3{
+    font-family:var(--font-display);
+    font-size:32px;
+    letter-spacing:-.03em;
+    margin-top:110px;
+    margin-bottom:12px;
+  }
+  .process-card p{
+    color:var(--ink-soft);
+    font-size:13px;
+    line-height:1.7;
+    max-width:34ch;
+  }
+  .process-card-dark p{ color:rgba(255,255,255,.6); }
+
+  .instagram-section{ padding-top:84px; padding-bottom:86px; }
+
+  .contact-section{ padding:20px 0 96px; }
+  .contact-card{
+    position:relative;
+    overflow:hidden;
+    min-height:430px;
+    border-radius:30px;
+    background:var(--accent);
+    color:var(--dark);
+    padding:48px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .contact-card::before{
+    content:"";
+    position:absolute;
+    width:420px;
+    height:420px;
+    right:-120px;
+    top:-170px;
+    border:1px solid rgba(16,16,18,.14);
+    border-radius:50%;
+    box-shadow:0 0 0 48px rgba(16,16,18,.035),0 0 0 96px rgba(16,16,18,.025);
+  }
+  .contact-orbit{
+    position:absolute;
+    right:45px;
+    top:43px;
+    font-size:9px;
+    letter-spacing:.18em;
+    transform:rotate(14deg);
+    opacity:.55;
+  }
+  .contact-copy{ position:relative; z-index:1; max-width:720px; }
+  .contact-copy .section-kicker{ color:rgba(16,16,18,.55); }
+  .contact-copy h2{
+    font-family:var(--font-display);
+    font-size:clamp(46px,7vw,92px);
+    line-height:.9;
+    letter-spacing:-.045em;
+    margin:10px 0 22px;
+  }
+  .contact-copy h2 em{ font-style:normal; color:rgba(16,16,18,.43); }
+  .contact-copy p{
+    max-width:48ch;
+    font-size:15px;
+    line-height:1.65;
+    color:rgba(16,16,18,.65);
+  }
+  .contact-btn{
+    position:relative;
+    z-index:1;
+    align-self:flex-start;
+    margin-top:30px;
+    display:inline-flex;
+    align-items:center;
+    gap:24px;
+    background:var(--dark);
+    color:#fff;
+    border-radius:999px;
+    padding:14px 20px;
+    font-size:13px;
+    font-weight:600;
+    transition:transform .25s ease;
+  }
+  .contact-btn:hover{ transform:translateY(-3px); }
+  .contact-btn span{ color:var(--accent); font-size:17px; }
+
+  footer{
+    background:var(--dark);
+    color:#fff;
+    padding:34px 0 22px;
+  }
+  footer .footer-cta h2{ font-family:var(--font-display); }
+  footer .footer-cta p{ color:rgba(255,255,255,.55); }
+  footer .footer-links a{ color:rgba(255,255,255,.7); }
+  footer .footer-links a:hover{ color:#fff; }
+
+  @media (max-width:900px){
+    .work-card:first-child{ grid-column:span 6; }
+    .work-card:nth-child(n+2){ grid-column:span 3; }
+    .process-grid{ grid-template-columns:1fr; }
+    .process-card{ min-height:250px; }
+    .process-card h3{ margin-top:72px; }
+  }
+  @media (max-width:680px){
+    .hero-actions{ margin-top:-4px; }
+    .hero-tags{ gap:14px; }
+    .work-section{ padding-top:66px; padding-bottom:70px; }
+    .work-grid{ grid-template-columns:1fr 1fr; gap:10px; margin-top:28px; }
+    .work-card:first-child{ grid-column:1 / -1; grid-row:auto; aspect-ratio:4/5; }
+    .work-card:nth-child(n+2){ grid-column:span 1; }
+    .work-card .work-meta{ left:12px; right:12px; bottom:11px; }
+    .work-card .work-meta .t,
+    .work-card:first-child .work-meta .t{ font-size:12px; }
+    .work-card .work-meta .c{ font-size:9px; }
+    .work-meta .play{ width:28px; height:28px; }
+    .contact-card{ min-height:440px; padding:30px 24px; border-radius:24px; }
+    .contact-orbit{ right:18px; top:22px; font-size:8px; }
+    .contact-copy h2{ font-size:clamp(44px,14vw,70px); }
+    .instagram-section{ padding-top:66px; padding-bottom:66px; }
+  }
+  @media (max-width:420px){
+    .work-grid{ grid-template-columns:1fr; }
+    .work-card:first-child,
+    .work-card:nth-child(n+2){ grid-column:1; aspect-ratio:4/5; }
+  }
+
+
+  .reveal-ready .section-head,
+  .reveal-ready .process-card,
+  .reveal-ready .contact-card{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal-ready.is-visible .section-head,
+  .reveal-ready.is-visible .process-card,
+  .reveal-ready.is-visible .contact-card{
+    opacity:1;
+    transform:none;
+  }
+
+
+  /* Compact layout: less empty space around the content */
+  .container{
+    width:min(100% - 32px, 1240px);
+  }
+  .hero-stage{
+    max-width:1280px;
+    padding-left:16px;
+    padding-right:16px;
+    padding-top:34px;
+    padding-bottom:28px;
+  }
+  .work-section{
+    padding-top:64px;
+    padding-bottom:68px;
+  }
+  .process-section{
+    padding-top:68px;
+    padding-bottom:68px;
+  }
+  .instagram-section{
+    padding-top:60px;
+    padding-bottom:64px;
+  }
+  .contact-section{
+    padding-top:8px;
+    padding-bottom:68px;
+  }
+  .work-grid{
+    margin-top:30px;
+  }
+  .process-grid{
+    margin-top:26px;
+  }
+
+  @media (max-width:680px){
+    .container{
+      width:min(100% - 20px, 1240px);
+    }
+    .hero-stage{
+      padding-left:5px;
+      padding-right:5px;
+      padding-top:24px;
+      padding-bottom:20px;
+    }
+    .work-section{
+      padding-top:52px;
+      padding-bottom:58px;
+    }
+    .process-section{
+      padding-top:56px;
+      padding-bottom:56px;
+    }
+    .instagram-section{
+      padding-top:52px;
+      padding-bottom:54px;
+    }
+    .contact-section{
+      padding-bottom:58px;
+    }
+  }
+
+
+  /* Testimonials: clean message cards, intentionally free of marketplace UI */
+  .testimonials-section{
+    padding:76px 0 82px;
+    background:var(--bg);
+  }
+  .testimonials-grid{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:16px;
+    margin-top:30px;
+  }
+  .testimonial-card{
+    position:relative;
+    min-height:300px;
+    padding:28px 30px 24px;
+    border:1px solid var(--line);
+    border-radius:24px;
+    background:var(--surface);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    overflow:hidden;
+    transition:transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease, border-color .3s ease;
+  }
+  .testimonial-card::before{
+    content:"“";
+    position:absolute;
+    right:22px;
+    top:-18px;
+    font-family:var(--font-display);
+    font-size:150px;
+    line-height:1;
+    color:rgba(16,16,18,.045);
+    pointer-events:none;
+  }
+  .testimonial-card:hover{
+    transform:translateY(-5px);
+    border-color:#c8c5bb;
+    box-shadow:0 22px 50px -35px rgba(0,0,0,.4);
+  }
+  .testimonial-featured{
+    background:#f0ede5;
+  }
+  .testimonial-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:relative;
+    z-index:1;
+  }
+  .testimonial-stars{
+    letter-spacing:2px;
+    font-size:13px;
+  }
+  .testimonial-label{
+    font-size:9px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+  }
+  .testimonial-card blockquote{
+    position:relative;
+    z-index:1;
+    margin:36px 0 42px;
+    max-width:48ch;
+    font-family:var(--font-display);
+    font-size:clamp(22px,2.3vw,31px);
+    line-height:1.1;
+    letter-spacing:-.025em;
+  }
+  .testimonial-card:not(.testimonial-featured) blockquote{
+    font-size:clamp(21px,2vw,27px);
+  }
+  .testimonial-author{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding-top:16px;
+    border-top:1px solid var(--line);
+  }
+  .testimonial-avatar{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--dark);
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.04em;
+  }
+  .testimonial-author div{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+  }
+  .testimonial-author strong{
+    font-size:12px;
+    font-weight:600;
+  }
+  .testimonial-author span{
+    font-size:10px;
+    color:var(--ink-faint);
+  }
+
+  @media (max-width:680px){
+    .testimonials-section{
+      padding:56px 0 62px;
+    }
+    .testimonials-grid{
+      grid-template-columns:1fr;
+      gap:12px;
+      margin-top:24px;
+    }
+    .testimonial-card{
+      min-height:280px;
+      padding:23px 22px 20px;
+      border-radius:20px;
+    }
+    .testimonial-card blockquote,
+    .testimonial-card:not(.testimonial-featured) blockquote{
+      font-size:22px;
+      margin:30px 0 34px;
+    }
+  }
+
+
+
+
+  /* Apple-inspired cursor: native pointer stays visible. */
+  @media (pointer:fine) and (hover:hover){
+    .apple-pointer{
+      position:fixed;
+      left:0;
+      top:0;
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:rgba(16,16,18,.88);
+      box-shadow:0 0 0 1px rgba(255,255,255,.85), 0 3px 12px rgba(0,0,0,.12);
+      pointer-events:none;
+      z-index:99999;
+      transform:translate(-50%,-50%);
+      opacity:0;
+      transition:
+        width .22s cubic-bezier(.2,.7,.2,1),
+        height .22s cubic-bezier(.2,.7,.2,1),
+        background .22s ease,
+        opacity .18s ease,
+        box-shadow .22s ease;
+    }
+    .apple-pointer.is-ready{ opacity:1; }
+    .apple-pointer.is-link{
+      width:30px;
+      height:30px;
+      background:rgba(255,255,255,.82);
+      box-shadow:0 4px 18px rgba(0,0,0,.12), inset 0 0 0 1px rgba(16,16,18,.14);
+    }
+    .apple-pointer.is-video{
+      width:50px;
+      height:50px;
+      background:var(--accent);
+      box-shadow:0 8px 25px rgba(0,0,0,.16);
+    }
+    .apple-pointer::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:4px;
+      height:4px;
+      border-radius:50%;
+      background:#fff;
+      transform:translate(-50%,-50%);
+    }
+    .apple-pointer.is-link::after{
+      width:6px;
+      height:6px;
+      background:var(--dark);
+    }
+    .apple-pointer.is-video::after{
+      content:"▶";
+      width:auto;
+      height:auto;
+      background:transparent;
+      color:var(--dark);
+      font-size:10px;
+      line-height:1;
+    }
+  }
+  @media (pointer:coarse){
+    .apple-pointer{ display:none !important; }
+  }
+
+  /* Floating testimonials scene: visual central + message cards around it. */
+  .testimonials-section{
+    position:relative;
+    overflow:hidden;
+    padding-top:76px;
+    padding-bottom:38px;
+  }
+  .testimonial-content{
+    position:relative;
+    z-index:20;
+  }
+  .testimonial-scene{
+    position:relative;
+    width:min(1320px, 100%);
+    height:760px;
+    margin:0 auto;
+  }
+  .testimonial-scene-glow{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:580px;
+    height:430px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:rgba(242,239,226,.82);
+    filter:blur(45px);
+  }
+  .testimonial-center{
+    position:absolute;
+    z-index:2;
+    left:50%;
+    top:50%;
+    width:min(700px,58vw);
+    height:510px;
+    transform:translate(-50%,-50%);
+  }
+  .testimonial-center .hero-card{
+    width:100%;
+    height:100%;
+    aspect-ratio:auto;
+    background:transparent;
+    overflow:visible;
+  }
+  .testimonial-center .hero-card video,
+  .testimonial-center .hero-card .hero-fallback{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+  }
+  .testimonial-center .hero-card video{
+    mix-blend-mode:multiply;
+  }
+
+  .floating-testimonial{
+    position:absolute;
+    z-index:8;
+    width:330px;
+    min-height:190px;
+    padding:20px 21px 19px;
+    border:1px solid rgba(16,16,18,.10);
+    border-radius:22px;
+    background:rgba(255,255,255,.90);
+    box-shadow:0 22px 55px -34px rgba(16,16,18,.5);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    transition:transform .35s cubic-bezier(.2,.75,.2,1), box-shadow .35s ease;
+  }
+  .floating-testimonial:hover{
+    transform:translateY(-7px) rotate(0deg) !important;
+    box-shadow:0 30px 65px -34px rgba(16,16,18,.55);
+  }
+  .floating-testimonial::after{
+    content:"“";
+    position:absolute;
+    right:15px;
+    top:-22px;
+    font-family:var(--font-display);
+    font-size:100px;
+    line-height:1;
+    color:rgba(16,16,18,.055);
+    pointer-events:none;
+  }
+  .floating-testimonial-top{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .floating-person{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    min-width:0;
+  }
+  .floating-person img,
+  .floating-avatar{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    flex:0 0 34px;
+  }
+  .floating-person img{
+    object-fit:cover;
+  }
+  .floating-avatar{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--dark);
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+  }
+  .floating-person div{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .floating-person strong{
+    font-size:11px;
+    font-weight:700;
+  }
+  .floating-person span{
+    font-size:9px;
+    color:var(--ink-faint);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .floating-stars{
+    font-size:10px;
+    letter-spacing:1.5px;
+    white-space:nowrap;
+  }
+  .floating-testimonial blockquote{
+    position:relative;
+    z-index:1;
+    margin:20px 0 0;
+    font-family:var(--font-display);
+    font-size:17px;
+    line-height:1.23;
+    letter-spacing:-.018em;
+  }
+  .floating-testimonial-a{
+    left:4%;
+    top:20%;
+    transform:rotate(-5deg);
+    background:rgba(240,237,229,.94);
+  }
+  .floating-testimonial-b{
+    right:4%;
+    top:10%;
+    transform:rotate(4deg);
+  }
+  .floating-testimonial-c{
+    left:8%;
+    bottom:8%;
+    transform:rotate(3deg);
+  }
+  .floating-testimonial-d{
+    right:8%;
+    bottom:4%;
+    transform:rotate(-4deg);
+  }
+  .testimonial-placeholder{
+    min-height:145px;
+    opacity:.72;
+  }
+  .placeholder-label{
+    display:block;
+    font-size:8px;
+    letter-spacing:.15em;
+    color:var(--ink-faint);
+  }
+  .testimonial-placeholder blockquote{
+    font-size:16px;
+    color:var(--ink-soft);
+    margin-top:18px;
+  }
+
+  /* The original hero visual is now exclusively part of the testimonial scene. */
+  .hero-stage{
+    display:none;
+  }
+
+  @media (max-width:900px){
+    .testimonial-scene{ height:690px; }
+    .testimonial-center{
+      width:620px;
+      max-width:72vw;
+      height:450px;
+    }
+    .floating-testimonial{ width:285px; }
+    .floating-testimonial-a{ left:2%; top:20%; }
+    .floating-testimonial-b{ right:2%; top:11%; }
+    .floating-testimonial-c{ left:3%; bottom:5%; }
+    .floating-testimonial-d{ right:3%; bottom:2%; }
+  }
+  @media (max-width:680px){
+    .testimonials-section{
+      padding-top:58px;
+      padding-bottom:62px;
+    }
+    .testimonial-scene{
+      height:860px;
+      width:100%;
+    }
+    .testimonial-center{
+      top:32%;
+      width:520px;
+      max-width:118vw;
+      height:360px;
+    }
+    .floating-testimonial{
+      width:calc(100% - 34px);
+      max-width:360px;
+      min-height:160px;
+      padding:17px 18px;
+    }
+    .floating-testimonial-a{ left:17px; top:42%; transform:rotate(-2deg); }
+    .floating-testimonial-b{ right:17px; top:59%; transform:rotate(2deg); }
+    .floating-testimonial-c{ left:17px; bottom:4%; transform:rotate(2deg); }
+    .floating-testimonial-d{ right:17px; bottom:-5%; transform:rotate(-2deg); }
+    .floating-testimonial blockquote{ font-size:15px; }
+  }
+  @media (max-width:420px){
+    .testimonial-scene{ height:850px; }
+    .testimonial-center{
+      top:27%;
+      height:320px;
+    }
+    .floating-testimonial{
+      width:calc(100% - 24px);
+      max-width:none;
+    }
+    .floating-testimonial-a{ left:12px; top:38%; }
+    .floating-testimonial-b{ right:12px; top:55%; }
+    .floating-testimonial-c{ left:12px; bottom:5%; }
+    .floating-testimonial-d{ right:12px; bottom:-4%; }
+  }
+
+  /* ============================================================
+     PRESUPUESTO — oculto salvo que se acceda con #presupuesto
+     ============================================================ */
+  #presupuesto{ display:none; }
+  #presupuesto:target{ display:block; }
+
+  .budget-section{ background:var(--bg); padding:100px 0 90px; }
+  .budget-wrap{ max-width:900px; }
+  .budget-title{ font-family:var(--font-display); font-weight:600; font-size:clamp(30px,4.5vw,44px); letter-spacing:-0.02em; line-height:1.05; margin-bottom:16px; }
+  .budget-lead{ color:var(--ink-soft); font-size:16px; max-width:56ch; line-height:1.6; margin-bottom:48px; }
+  .budget-subtitle{ font-family:var(--font-display); font-weight:600; font-size:21px; margin-bottom:6px; }
+  .budget-lead-sm{ color:var(--ink-soft); font-size:14px; margin-bottom:22px; }
+
+  .plans{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:36px; }
+  @media (max-width:760px){ .plans{ grid-template-columns:1fr; } }
+
+  .plans .plan{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg);
+    padding:26px 22px; display:flex; flex-direction:column; position:relative;
+  }
+  .plans .plan.featured{ border-color:var(--dark); }
+  .plans .plan.dark{ background:var(--dark); color:#fff; border-color:var(--dark); }
+  .plans .plan.dark .plan-desc{ color:rgba(255,255,255,.6); }
+  .plans .plan.dark .plan-price em{ color:rgba(255,255,255,.5); }
+  .plans .plan.dark .feat{ color:rgba(255,255,255,.82); }
+  .plans .plan.dark .feat::before{ background:var(--accent); }
+  .plans .plan.dark .plan-cta{ background:var(--accent); color:var(--dark); }
+
+  .plans .badge{ position:absolute; top:-11px; right:22px; background:var(--accent); color:var(--dark); font-size:11px; font-weight:700; padding:5px 12px; border-radius:999px; }
+  .plans .plan-name{ font-family:var(--font-display); font-weight:600; font-size:17px; margin-bottom:4px; }
+  .plans .plan-desc{ font-size:13px; color:var(--ink-soft); margin-bottom:18px; min-height:32px; }
+  .plans .plan-price{ font-family:var(--font-display); font-weight:600; font-size:28px; margin-bottom:20px; }
+  .plans .plan-price em{ font-style:normal; font-size:13px; font-weight:500; color:var(--ink-faint); }
+  .plans .feat-list{ list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:22px; flex:1; }
+  .plans .feat{ font-size:13.5px; color:var(--ink-soft); display:flex; gap:9px; align-items:flex-start; }
+  .plans .feat::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--accent-deep); margin-top:6px; flex-shrink:0; }
+  .plans .plan-cta{ display:block; text-align:center; padding:12px; border-radius:999px; background:var(--dark); color:#fff; font-size:13.5px; font-weight:600; }
+
+  .budget-note{ font-size:13px; color:var(--ink-soft); border-top:1px dashed var(--line); padding-top:20px; margin-bottom:52px; line-height:1.7; }
+  .budget-note strong{ color:var(--ink); }
+
+  .examples-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media (max-width:760px){ .examples-grid{ grid-template-columns:1fr; } }
+  .example-card{ background:var(--dark); border-radius:var(--r-lg); overflow:hidden; }
+  .example-card video{ width:100%; aspect-ratio:9/16; object-fit:cover; background:#000; }
+  .ex-label{ color:rgba(255,255,255,.7); font-size:12.5px; padding:12px 16px; }
+
 </style>
 </head>
 <body>
 
 <header class="nav">
   <div class="container nav-row">
-    <div class="brand"><span class="mono" id="monoLetter">T</span><span id="brandName">Tu Nombre</span></div>
+    <div class="brand"><span class="mono" id="monoLetter">T</span><span id="brandName">José Esperandio</span></div>
     <nav class="nav-links">
-      <a href="#clientes">Clientes</a>
-      <a href="#instagram">Instagram</a>
       <a href="#trabajos">Trabajos</a>
+      <a href="#testimonios">Testimonios</a>
+      <a href="#clientes">Clientes</a>
+      <a href="#proceso">Proceso</a>
+      <a href="#instagram">Instagram</a>
     </nav>
-    <a class="nav-cta" id="navCta" href="mailto:tu@email.com">Escríbeme →</a>
+    <a class="nav-cta" id="navCta" href="mailto:tu@email.com">Escríbeme <span>↗</span></a>
+    <button class="nav-menu-btn" id="navMenuBtn" aria-label="Abrir menú" aria-expanded="false"><span></span></button>
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="#trabajos">Trabajos</a>
+      <a href="#testimonios">Testimonios</a>
+      <a href="#clientes">Clientes</a>
+      <a href="#proceso">Proceso</a>
+      <a href="#instagram">Instagram</a>
+    </nav>
   </div>
 </header>
 
@@ -327,51 +1287,28 @@
     <div class="container">
       <div class="status-pill"><span class="status-dot"></span> Disponible para nuevos proyectos</div>
       <h1 class="headline">Historias que<br><em>se mueven.</em></h1>
-      <p class="subhead" id="heroSubhead">Soy motion designer y editor de video. Transformo ideas en piezas que la gente realmente se queda viendo hasta el final.</p>
-    </div>
-
-    <div class="hero-stage">
-      <!-- floating decorative props -->
-      <div class="float-prop chip-dark prop-typing">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h.01M11 9h.01M15 9h.01M7 13h10"/></svg>
-        escribiendo…
+      <p class="subhead" id="heroSubhead">Motion design y edición de video para convertir ideas en piezas que se sienten, se entienden y se quedan en la cabeza.</p>
+      <div class="hero-actions">
+        <a class="hero-btn hero-btn-dark" href="#trabajos">Ver trabajos <span>↘</span></a>
+        <a class="hero-btn hero-btn-light" href="mailto:tu@email.com">Hablemos <span>↗</span></a>
       </div>
-      <div class="float-prop circle prop-play">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      </div>
-      <div class="float-prop prop-cut">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"/></svg>
-        cortando clips
-      </div>
-      <div class="float-prop prop-render">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg>
-        renderizando
-      </div>
-      <div class="float-prop prop-mic">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 19v3"/></svg>
-        audio limpio
-      </div>
-      <div class="float-prop prop-cam">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-        grabando
-      </div>
-
-      <!-- main hero video card: reemplazá CONFIG.heroVideo con tu clip -->
-      <div class="hero-card" id="heroCard">
-        <video id="heroVideo" muted loop autoplay playsinline></video>
-        <div class="hero-fallback" id="heroFallback">
-          <strong>Tu video acá</strong>
-          <span>Poné tu clip (ideal vertical/horizontal en loop, vos escribiendo o editando) en CONFIG.heroVideo, abajo en el código.</span>
-        </div>
+      <div class="hero-tags">
+        <span>EDIT · MOTION · STORY</span>
+        <span>Disponible para proyectos</span>
       </div>
     </div>
+
+    <!-- Hero visual moved below the portfolio, into the testimonials composition. -->
   </section>
 
   <!-- ============ CLIENTES ============ -->
   <section id="clientes">
     <div class="container">
       <div class="section-head">
-        <h2>Con quién trabajé</h2>
+        <div>
+          <span class="section-kicker">01 / CLIENTES</span>
+          <h2>Con quién trabajé</h2>
+        </div>
         <p>Marcas y creadores que confiaron su contenido en mis manos.</p>
       </div>
     </div>
@@ -382,12 +1319,132 @@
     </div>
   </section>
 
-  <!-- ============ INSTAGRAM ============ -->
-  <section id="instagram">
+
+  <!-- ============ TRABAJOS ============ -->
+  <section id="trabajos" class="work-section">
+    <div class="container">
+      <div class="section-head work-head">
+        <div>
+          <span class="section-kicker">02 / PORTFOLIO</span>
+          <h2>El trabajo habla por mí.</h2>
+        </div>
+        <p>Una selección de piezas. Reproduce automáticamente y activa el sonido al pasar el cursor.</p>
+      </div>
+      <div class="work-grid" id="workGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIOS ============ -->
+  <section id="testimonios" class="testimonials-section">
+    <div class="container testimonial-content">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">03 / TESTIMONIOS</span>
+          <h2>Lo que dicen de mi trabajo.</h2>
+        </div>
+        <p>Experiencias reales de personas con las que he trabajado.</p>
+      </div>
+    </div>
+
+    <div class="testimonial-scene">
+      <div class="testimonial-scene-glow"></div>
+
+      <!-- Visual central: la composición original del hero -->
+      <div class="testimonial-center">
+        <div class="hero-card" id="testimonialHeroCard">
+          <video id="testimonialHeroVideo" muted loop autoplay playsinline></video>
+          <div class="hero-fallback" id="testimonialHeroFallback">
+            <strong>Tu video acá</strong>
+            <span>Poné tu clip en CONFIG.heroVideo.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonios flotando alrededor del visual -->
+      <article class="floating-testimonial floating-testimonial-a">
+        <div class="floating-testimonial-top">
+          <div class="floating-person">
+            <img src="dealoracle.jpg" alt="Deal Oracle">
+            <div>
+              <strong>Deal Oracle</strong>
+              <span>@imsohesh · United States</span>
+            </div>
+          </div>
+          <span class="floating-stars">★★★★★</span>
+        </div>
+        <blockquote>“10/10 I am coming back to get more videos edited. he killed the edit and did quick revisions for my ad. I recommend him for your motion graphic edits.”</blockquote>
+      </article>
+
+      <article class="floating-testimonial floating-testimonial-b">
+        <div class="floating-testimonial-top">
+          <div class="floating-person">
+            <span class="floating-avatar">AC</span>
+            <div>
+              <strong>@alexcasad0</strong>
+              <span>España</span>
+            </div>
+          </div>
+          <span class="floating-stars">★★★★★</span>
+        </div>
+        <blockquote>“Todo genial! Un gran profesional, y encantado de trabajar con él. Si necesito de nuevo sus servicios, le volveré a contactar sin duda!”</blockquote>
+      </article>
+
+      <!-- Tarjetas preparadas para futuros testimonios reales -->
+      <article class="floating-testimonial floating-testimonial-c testimonial-placeholder">
+        <span class="placeholder-label">PRÓXIMO TESTIMONIO</span>
+        <blockquote>“Aquí irá otra experiencia real de un cliente.”</blockquote>
+      </article>
+
+      <article class="floating-testimonial floating-testimonial-d testimonial-placeholder">
+        <span class="placeholder-label">PRÓXIMO TESTIMONIO</span>
+        <blockquote>“Más opiniones reales aparecerán aquí.”</blockquote>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ PROCESO ============ -->
+  <section id="proceso" class="process-section">
     <div class="container">
       <div class="section-head">
-        <h2>Donde me pueden seguir</h2>
-        <p>El día a día del trabajo, antes y después.</p>
+        <div>
+          <span class="section-kicker">04 / PROCESO</span>
+          <h2>No solo edito. Construyo la idea.</h2>
+        </div>
+        <p>Un proceso simple para que cada pieza tenga intención, ritmo y personalidad.</p>
+      </div>
+
+      <div class="process-grid">
+        <article class="process-card">
+          <span class="process-num">01</span>
+          <div class="process-icon">↳</div>
+          <h3>Entiendo</h3>
+          <p>Primero entiendo qué quieres contar, para quién es y qué debería provocar el video.</p>
+        </article>
+        <article class="process-card process-card-dark">
+          <span class="process-num">02</span>
+          <div class="process-icon">✦</div>
+          <h3>Construyo</h3>
+          <p>Ritmo, cortes, sonido, motion y recursos visuales trabajan juntos, no por separado.</p>
+        </article>
+        <article class="process-card">
+          <span class="process-num">03</span>
+          <div class="process-icon">✓</div>
+          <h3>Pulo</h3>
+          <p>El último paso es quitar lo que sobra y cuidar los detalles que hacen que una pieza se sienta terminada.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INSTAGRAM ============ -->
+  <section id="instagram" class="instagram-section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">05 / SOCIAL</span>
+          <h2>También estoy por aquí.</h2>
+        </div>
+        <p>El día a día, nuevos proyectos y un poco de lo que pasa detrás de la edición.</p>
       </div>
     </div>
     <div class="container">
@@ -397,15 +1454,96 @@
     </div>
   </section>
 
-
-  <!-- ============ TRABAJOS ============ -->
-  <section id="trabajos">
+  <!-- ============ CONTACTO ============ -->
+  <section class="contact-section">
     <div class="container">
-      <div class="section-head">
-        <h2>Últimos trabajos</h2>
-        <p>Una selección de piezas recientes. Pasá el cursor para reproducir.</p>
+      <div class="contact-card">
+        <div class="contact-orbit">LET'S MAKE IT MOVE</div>
+        <div class="contact-copy">
+          <span class="section-kicker">06 / CONTACTO</span>
+          <h2>¿Tienes una idea?<br><em>Hagámosla mover.</em></h2>
+          <p>Cuéntame qué tienes en mente. Si hay una buena historia, encontramos la forma de contarla.</p>
+        </div>
+        <a class="contact-btn" href="mailto:tu@email.com">Empezar una conversación <span>↗</span></a>
       </div>
-      <div class="work-grid" id="workGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============ PRESUPUESTO (link privado, no está en el menú) ============ -->
+  <!-- Se ve solo entrando con .../index.html#presupuesto -->
+  <section id="presupuesto" class="budget-section">
+    <div class="container budget-wrap">
+
+      <span class="section-kicker">Propuesta</span>
+      <h2 class="budget-title">Video para redes sociales,<br>hecho para retener.</h2>
+      <p class="budget-lead">Planes mensuales de edición de reels y shorts. Elegí el nivel de involucramiento que necesitás.</p>
+
+      <div class="plans">
+        <div class="plan">
+          <div class="plan-name">Opción 1 · Edición</div>
+          <div class="plan-desc">Vos grabás (o me enviás el material), yo edito.</div>
+          <div class="plan-price">$100 <em>/ mes</em></div>
+          <ul class="feat-list">
+            <li class="feat">8 videos editados por mes</li>
+            <li class="feat">Contenido enviado por el cliente</li>
+            <li class="feat">Dividido en la manera que prefieras</li>
+          </ul>
+          <a class="plan-cta" href="mailto:joseggutierrez13@email.com">Elegir Opción 1</a>
+        </div>
+
+        <div class="plan featured">
+          <span class="badge">Con grabación</span>
+          <div class="plan-name">Opción 2 · Grabación + Edición</div>
+          <div class="plan-desc">Voy con el equipo, grabo y edito todo el mes.</div>
+          <div class="plan-price">$200 <em>/ mes</em></div>
+          <ul class="feat-list">
+            <li class="feat">10 videos al mes (grabación + edición)</li>
+            <li class="feat">Dividido en la manera que prefieras</li>
+            <li class="feat">Idealmente 2 de los 10 pensados como pauta publicitaria</li>
+          </ul>
+          <a class="plan-cta" href="mailto:joseggutierrez13@email.com">Elegir Opción 2</a>
+        </div>
+
+        <div class="plan dark">
+          <span class="badge">Todo incluido</span>
+          <div class="plan-name">Plan Completo</div>
+          <div class="plan-desc">Todo lo de la Opción 2, más el manejo de tus redes.</div>
+          <div class="plan-price">$260 <em>/ mes</em></div>
+          <ul class="feat-list">
+            <li class="feat">Grabación + edición de 10 videos al mes</li>
+            <li class="feat">2 videos pensados como pauta publicitaria</li>
+            <li class="feat">Gestión completa de redes sociales</li>
+            <li class="feat">Publicación y seguimiento incluidos</li>
+          </ul>
+          <a class="plan-cta" href="mailto:joseggutierrez13@email.com">Elegir Plan Completo</a>
+        </div>
+      </div>
+
+      <div class="budget-note">
+        <strong>Tasa y forma de pago:</strong> todos los precios se manejan a tasa BCV del día del pago. Se abona 50% de adelanto para iniciar y 50% contra la entrega final del proyecto — o, si lo preferís, armamos juntos un plan de pago.
+        <br><br>
+        <strong>Video suelto</strong> (fuera de cualquier plan): desde $15, según la complejidad.
+        <br><br>
+        <strong>Desglose Opción 2 / Plan Completo:</strong> $10 por video corresponde al servicio de grabación.
+      </div>
+
+      <h3 class="budget-subtitle">Ejemplos de lo que se puede lograr</h3>
+      <p class="budget-lead-sm">Una muestra del máximo nivel de edición dentro de estos planes.</p>
+      <div class="examples-grid">
+        <div class="example-card">
+          <video controls playsinline preload="metadata" poster="viaje.jpg" src="viaje.mp4"></video>
+          <div class="ex-label">Efecto VFX / transición</div>
+        </div>
+        <div class="example-card">
+          <video controls playsinline preload="metadata" poster="prueba-ruben.jpg" src="prueba-ruben.mp4"></video>
+          <div class="ex-label">Podcast con motion graphics</div>
+        </div>
+        <div class="example-card">
+          <video controls playsinline preload="metadata" poster="instagram-herramienta.jpg" src="instagram-herramienta.mp4"></video>
+          <div class="ex-label">Hook tipográfico</div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -420,7 +1558,7 @@
       </div>
       <div class="footer-links">
         <a href="mailto:tu@email.com">Email</a>
-        <a href="#" target="_blank">Instagram</a>
+        <a href="https://instagram.com/joseesperandioo" target="_blank" rel="noopener">Instagram</a>
         <a href="#" target="_blank">Behance</a>
       </div>
     </div>
@@ -428,13 +1566,25 @@
   </div>
 </footer>
 
+<!-- Lightbox: click en cualquier video de la galería lo abre en grande con sonido -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-box">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">✕</button>
+    <video id="lightboxVideo" controls playsinline></video>
+    <div class="lightbox-meta">
+      <div class="t" id="lightboxTitle"></div>
+      <div class="c" id="lightboxClient"></div>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ============================================================
    CONFIG — EDITÁ ACÁ TODO TU CONTENIDO REAL
    ============================================================ */
 const CONFIG = {
-  name: "Tu Nombre",
-  email: "tu@email.com",
+  name: "Jose Esperandio",
+  email: "joseggutierrez13@email.com",
 
   // Video principal del hero: tu clip en loop (vos escribiendo/editando, objetos, etc.)
   heroVideo: "video.mp4",
@@ -449,7 +1599,9 @@ const CONFIG = {
     { name: "Alejo Digital", role: "Marketing", initials: "AD", ig: "alejodigital21", logo: "alejo.jpg" },
     { name: "Sake Sushi", role: "Restaurante", initials: "SS", ig: "sakesushivcp", logo: "sakesushi.jpg" },
     { name: "QuickBooks Profe", role: "Finanzas", initials: "QP", ig: "quickbooksprofe_", logo: "quickbooks.jpg" },
-    { name: "Deal Oracle", role: "Ecommerce", initials: "DO", ig: "dealoracle", logo: "dealoracle.jpg" }
+    { name: "Deal Oracle", role: "Ecommerce", initials: "DO", ig: "dealoracle", logo: "dealoracle.jpg" },
+    { name: "Solera", role: "Cervecería", initials: "SO", ig: "solera", logo: "solera.svg" },
+    { name: "Farmatodo", role: "Farmacias", initials: "FT", ig: "farmatodo", logo: "farmatodo.svg" }
   ],
 
   // Perfiles de Instagram para la sección de personas
@@ -462,7 +1614,10 @@ const CONFIG = {
     "@alejodigital21",
     "@sakesushivcp",
     "@quickbooksprofe_",
-    "@dealoracle"
+    "@dealoracle",
+    "@solera",
+    "@farmatodo",
+    "@joseesperandioo"
   ],
 
   // Programas que usás — color = color del badge
@@ -495,15 +1650,20 @@ document.getElementById("brandName").textContent = CONFIG.name;
 document.getElementById("monoLetter").textContent = CONFIG.name.trim().charAt(0).toUpperCase() || "T";
 document.getElementById("navCta").href = "mailto:" + CONFIG.email;
 
-// hero video
-const heroVideo = document.getElementById("heroVideo");
-const heroFallback = document.getElementById("heroFallback");
-if(CONFIG.heroVideo){
+// Main visual video (now located in the testimonials floating composition)
+const heroVideo = document.getElementById("testimonialHeroVideo");
+const heroFallback = document.getElementById("testimonialHeroFallback");
+if(heroVideo && CONFIG.heroVideo){
   heroVideo.src = CONFIG.heroVideo;
   heroVideo.setAttribute("aria-label", "Video principal del portfolio");
   heroVideo.style.display = "block";
-  heroFallback.style.display = "none";
-} else {
+  heroVideo.muted = true;
+  heroVideo.autoplay = true;
+  heroVideo.loop = true;
+  heroVideo.playsInline = true;
+  heroVideo.play().catch(()=>{});
+  if(heroFallback) heroFallback.style.display = "none";
+} else if(heroVideo) {
   heroVideo.style.display = "none";
 }
 
@@ -533,60 +1693,172 @@ function renderInstagram(){
   `).join("");
 }
 
-// tools grid
-function renderTools(){
-  const grid = document.getElementById("toolsGrid");
-  grid.innerHTML = CONFIG.tools.map(t => `
-    <div class="tool-badge">
-      <div class="mark" style="background:${t.color}">${t.label}</div>
-      <div>
-        <div class="label">${t.sub}</div>
-        <div class="sub">${t.label}</div>
-      </div>
-    </div>
-  `).join("");
-}
 
 // work grid (video reel)
 function renderWorks(){
   const grid = document.getElementById("workGrid");
+
   grid.innerHTML = CONFIG.works.map((w, i) => `
     <div class="work-card" data-idx="${i}">
-      <video muted loop playsinline preload="metadata" src="${w.src}"></video>
+      <video muted autoplay loop playsinline preload="auto" src="${w.src}"></video>
       <div class="work-meta">
         <div>
           <div class="t">${w.title}</div>
           <div class="c">${w.client}</div>
         </div>
-        <div class="play">
+        <div class="play" aria-hidden="true">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#101012"><path d="M8 5v14l11-7z"/></svg>
         </div>
       </div>
     </div>
   `).join("");
 
-  // Desktop/tablet: reproduce on hover. Mobile: tap to play/pause.
   grid.querySelectorAll(".work-card").forEach(card => {
     const v = card.querySelector("video");
     if(!v) return;
 
-    card.addEventListener("mouseenter", () => v.play().catch(()=>{}));
+    v.muted = true;
+    v.play().catch(()=>{});
+
+    card.addEventListener("mouseenter", () => {
+      v.muted = false;
+      v.play().catch(() => {
+        v.muted = true;
+        v.play().catch(()=>{});
+      });
+    });
+
     card.addEventListener("mouseleave", () => {
-      v.pause();
-      v.currentTime = 0;
+      v.muted = true;
+      v.play().catch(()=>{});
     });
 
     card.addEventListener("click", () => {
-      if (window.matchMedia("(max-width: 560px)").matches) {
-        if (v.paused) v.play().catch(()=>{});
-        else v.pause();
-      }
+      openLightbox(w);
     });
   });
 }
+
+// Lightbox: abre el video del work-card en grande, con controles y sonido.
+const lightboxEl = document.getElementById("lightbox");
+const lightboxVideo = document.getElementById("lightboxVideo");
+const lightboxTitle = document.getElementById("lightboxTitle");
+const lightboxClient = document.getElementById("lightboxClient");
+
+function openLightbox(work){
+  lightboxVideo.src = work.src;
+  lightboxVideo.muted = false;
+  lightboxTitle.textContent = work.title;
+  lightboxClient.textContent = work.client;
+  lightboxEl.classList.add("is-open");
+  lightboxVideo.currentTime = 0;
+  lightboxVideo.play().catch(()=>{});
+}
+
+function closeLightbox(){
+  lightboxEl.classList.remove("is-open");
+  lightboxVideo.pause();
+  lightboxVideo.removeAttribute("src");
+  lightboxVideo.load();
+}
+
+document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
+lightboxEl.addEventListener("click", (e) => { if(e.target === lightboxEl) closeLightbox(); });
+document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeLightbox(); });
+
 renderClients();
 renderInstagram();
 renderWorks();
+
+// Scroll reveal: subtle, fast and disabled when reduced motion is requested.
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const revealTargets = [
+    ...document.querySelectorAll(".work-section, .process-section, .instagram-section, .contact-section")
+  ];
+  revealTargets.forEach(el => el.classList.add("reveal-ready"));
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealTargets.forEach(el => revealObserver.observe(el));
+}
+
+
+
+// Floating pill navigation: it stays visible, then subtly compacts while scrolling.
+const navEl = document.querySelector('header.nav');
+window.addEventListener('scroll', () => {
+  if (navEl) navEl.classList.toggle('scrolled', window.scrollY > 36);
+}, { passive:true });
+
+// Mobile navigation opens/closes as a compact menu inside the pill.
+const navMenuBtn = document.getElementById('navMenuBtn');
+if (navMenuBtn && navEl) {
+  navMenuBtn.addEventListener('click', () => {
+    const open = navEl.classList.toggle('menu-open');
+    navMenuBtn.classList.toggle('open', open);
+    navMenuBtn.setAttribute('aria-expanded', String(open));
+  });
+  document.querySelectorAll('.mobile-nav a').forEach(link => link.addEventListener('click', () => {
+    navEl.classList.remove('menu-open');
+    navMenuBtn.classList.remove('open');
+    navMenuBtn.setAttribute('aria-expanded', 'false');
+  }));
+}
+
+</script>
+
+
+
+<script>
+  // Minimal Apple-like pointer accent. The browser's native cursor is never hidden.
+  (() => {
+    if (!window.matchMedia("(pointer:fine) and (hover:hover)").matches) return;
+
+    const pointer = document.createElement("div");
+    pointer.className = "apple-pointer";
+    document.body.appendChild(pointer);
+
+    let x = -100, y = -100, tx = -100, ty = -100;
+    let entered = false;
+
+    document.addEventListener("pointermove", (e) => {
+      tx = e.clientX;
+      ty = e.clientY;
+      if (!entered) {
+        x = tx; y = ty;
+        entered = true;
+        pointer.classList.add("is-ready");
+      }
+    }, {passive:true});
+
+    const animate = () => {
+      x += (tx - x) * .2;
+      y += (ty - y) * .2;
+      pointer.style.left = x + "px";
+      pointer.style.top = y + "px";
+      requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+
+    document.addEventListener("mouseover", (e) => {
+      const video = e.target.closest(".work-card");
+      const link = e.target.closest("a, button, [role='button']");
+      pointer.classList.toggle("is-video", !!video);
+      pointer.classList.toggle("is-link", !!link && !video);
+    });
+
+    document.addEventListener("mouseleave", () => pointer.classList.remove("is-ready"));
+    document.addEventListener("mouseenter", () => pointer.classList.add("is-ready"));
+  })();
+</script>
+
+</body>
+</html>
 </script>
 </body>
 </html>
